@@ -21,9 +21,11 @@
 (defn add-readonly [field readonly] (add-state-key field "readonly" readonly))
 (defn add-invisible [field invisible] (add-state-key field  "invisible" invisible))
 
+
 (defn add-depends [field depends]
-  (setv current-depends (or field.depends []))
-  (setv field.depends (list (set (+ depends current-depends))))
+  "depends maybe a list or set"
+  (setv current-depends (or field.depends #{}))
+  (setv field.depends (.union current-depends (set depends)))
   field)
 
 (defn readonly-no-company [field]
