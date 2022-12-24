@@ -1,5 +1,25 @@
 (import decimal
-        [decimal [Decimal]])
+        decimal [Decimal]
+        functools [reduce]
+        itertools [repeat groupby]
+        hy.pyops *)
+
+(defn none? [x]
+  "Check if `x` is None"
+  (is x None))
+
+(defn empty? [coll]
+  "Check if `coll` is empty."
+  (= 0 (len coll)))
+
+(defn first [coll]
+  "Return first item from `coll`."
+  (next (iter coll) None))
+
+(defn some [pred coll]
+  "Return the first logical true value of applying `pred` in `coll`, else None."
+  (first (filter None (map pred coll))))
+
 
 (defn quantize-euros[d]
   (when (not (none? d))
@@ -37,7 +57,7 @@
                 divisor-int
                 )
     num-lows (- divisor-int num-highs)
-    dividend-decimal-fn (if (pos? dividend-decimal) + -)
+    dividend-decimal-fn (if (< 0 dividend-decimal) + -)
     high-amount (dividend-decimal-fn high-amount)
     low-amount (dividend-decimal-fn low-amount)
     )
@@ -58,7 +78,7 @@
                       portions))
         diff (- value (reduce + values))
         )
-  (if (zero? diff)
+  (if (= 0 diff)
       values
       (do
         (list
@@ -67,6 +87,6 @@
   )
 
 (defn c-group-by [fn iter]
-  (group-by
+  (groupby
     (sorted iter :key fn)
     :key fn))

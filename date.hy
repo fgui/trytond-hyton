@@ -1,11 +1,14 @@
 (import datetime
         time
         pytz
-        [datetime [timedelta]]
-        [trytond.model [fields Model]]
-        [trytond.pool [Pool]])
+        datetime [timedelta]
+        trytond.model [fields Model]
+        trytond.pool [Pool]
+        trytond.modules.hyton.utils [first]
+        cytoolz [second])
+(require hyrule [->])
 
-(setv TIMEZONES  (lfor x pytz.common_timezones (, x x)))
+(setv TIMEZONES  (lfor x pytz.common_timezones #(x x)))
 
 (defn timezones []
   TIMEZONES)
@@ -31,7 +34,7 @@
       (->
         date
         (date-first-day-month)
-        (.replace :month (inc month))
+        (.replace :month (+ 1 month))
         (- (timedelta :days 1)))))
 
 (defn date-first-day-year [date]
@@ -63,7 +66,7 @@
 
 (defn date-next-weekday [date weekday]
   (setv day-gap (- (int weekday) (date.weekday))
-        forward-day-gap (if (neg? day-gap) (+ 7 day-gap) day-gap))
+        forward-day-gap (if (> 0 day-gap) (+ 7 day-gap) day-gap))
   (+ date (timedelta :days forward-day-gap)))
 
 (defn date-next-day-of-month [date day-of-month]
@@ -73,7 +76,7 @@
       ))
 
 ;; it includes date in locale and unix time up to seconds.
-(defn dt-str4bots [&optional [sep "-"]]
+(defn dt-str4bots [[sep "-"]]
   (+ (.strftime (datetime.datetime.now) "%Y%m%H%M%S")
      sep
      (str (int (time.time)))))

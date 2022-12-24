@@ -1,11 +1,12 @@
-(import [trytond.model [fields]]
-        [trytond.pyson [Not Equal Eval Or And Bool If Get Greater]]
-        [trytond.modules.hyton.utils [get-or]])
+(import trytond.model [fields]
+        trytond.pyson [Not Equal Eval Or And Bool If Get Greater]
+        trytond.modules.hyton.utils [get-or])
+(require hyrule [assoc ->])
 
-(defn Company [&optional [name "Company"] &rest args &kwargs kwargs]
+(defn Company [[name "Company"] #* args #** kwargs]
   (.Many2One fields "company.company" name #* args #** kwargs))
 
-(defn Party [&optional [name "Party"] &rest args &kwargs kwargs]
+(defn Party [[name "Party"] #* args #** kwargs]
   (.Many2One fields "party.party" name #* args #** kwargs))
 
 (defn add-state-key [field key statement]

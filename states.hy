@@ -1,5 +1,5 @@
 (import
-  [trytond.pyson [Not Equal Eval Or And Bool If Get Greater]])
+  trytond.pyson [Not Equal Eval Or And Bool If Get Greater])
 
 ;; this could be in company.
 

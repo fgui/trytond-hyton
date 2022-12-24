@@ -1,5 +1,5 @@
 (import
-  [trytond.transaction [Transaction]])
+  trytond.transaction [Transaction])
 
 (defn context-get [key]
   (.get (. (Transaction) context) key))
