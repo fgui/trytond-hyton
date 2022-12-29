@@ -57,14 +57,14 @@
   (defn [(with_transaction)] test-add-depends [self]
     (.assertEqual self
                   (. (common-fields.Company) depends)
-                  []
+                  #{}
                   )
     (.assertEqual self
                   (. (common-fields.add-depends
                        (common-fields.Company)
                        ["hola"])
                      depends)
-                  ["hola"]
+                  #{"hola"}
                   )
 
     (.assertEqual self
@@ -72,8 +72,8 @@
                     (.
                       (common-fields.add-depends
                         (common-fields.Company 
-                          :depends ["hola" "adeu"]) 
-                        ["hola" "goodbye"])
+                          :depends ["hola" "adeu"])
+                        #{"hola" "goodbye"})
                       depends))
                   (sorted ["hola" "adeu" "goodbye"])
                   ))
