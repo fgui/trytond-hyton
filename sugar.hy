@@ -1,4 +1,5 @@
 (import hy.models [Symbol]
+        trytond.pool [Pool]
         trytond.modules.hyton.utils [first]
         hyrule [rest]
         cytoolz [second partition])
@@ -25,6 +26,22 @@
 (defn save [model]
   (.save model)
   model)
+
+(defn pool-gets [provider keys]
+  (map (fn[s] (.get (Pool) s)) keys))
+
+(defn pool-create [model-name #* args #** kargs]
+  (save ((.get (Pool) model-name) #* args #** kargs)))
+
+(defn pool-new [model-name #* args #** kargs]
+  ((.get (Pool) model-name) #* args #** kargs))
+
+(defn pool-load [model-name id]
+  ((.get (Pool) model-name) id)
+  )
+
+(defn pool-search [model-name #* args #** kargs]
+  (.search (.get (Pool) model-name) #* args #** kargs))
 
 ;;rec-name helpers
 (defn not-operator? [s]
