@@ -36,7 +36,14 @@
     (setv new-identifier (create-id size prefix)))
   new-identifier)
 
-(defn add-identifier [values key-identifier [size 8] [prefix ""]]
-  (setv identifier (try (get values "identifier") (except [KeyError] None)))
-      (when (or (none? identifier) (= "" identifier))
-        (assoc values "identifier" (get-new-id key-identifier "identifier" size prefix))))
+(defn add-identifier [values model-name [size 8] [prefix ""] [known-ids #{}]]
+  "Given a dictionary of values. For those with no key identifier.
+Add a unique identifier within the model-name with the given parameters.
+Use know-ids for Ids not added yet to the model which should not be used either"
+  (setv identifier (.get values "identifier" None))
+  (when (or (none? identifier) (= "" identifier))
+    (setv id (get-new-id model-name "identifier" size prefix))
+    (while (in id known-ids)
+      (setv id (get-new-id model-name "identifier" size prefix)))
+    (.add known-ids id)
+    (assoc values "identifier" id)))

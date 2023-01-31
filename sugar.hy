@@ -63,13 +63,13 @@
   `(defn [classmethod] search-rec-name [cls name clauses]
          (rec-name-search-fields ~fields clauses)))
 
-(defmacro create-fn-values [f-values]
+(defmacro create-fn-values [fn-values]
   `(defn [classmethod] create [cls vlist]
-     (setv c-vlist
-           (lfor x vlist (.copy x)))
-     (for [values c-vlist] (~f-values values))
-     (.create (super) c-vlist)
-     ))
+     (setv
+       fn-pre ~fn-values
+       c-vlist (lfor x vlist (.copy x)))
+     (for [values c-vlist] (fn-pre values))
+     (.create (super) c-vlist)))
 
 ;; it has defensive copy is it really needed?
 (defmacro on-create [fn-values fn-record]
