@@ -74,17 +74,20 @@
 ;; it has defensive copy is it really needed?
 (defmacro on-create [fn-values fn-record]
   `(defn [classmethod] create [cls vlist]
-     (setv c-vlist
-           (lfor x vlist (.copy x)))
-     (for [values c-vlist] (~fn-values values))
+     (setv
+       fn-pre ~fn-values
+       fn-post ~fn-record
+       c-vlist (lfor x vlist (.copy x)))
+     (for [values c-vlist] (fn-pre values))
      (setv ret (.create (super) c-vlist))
-     (for [o ret] (~fn-record o))
+     (for [o ret] (fn-post o))
      ret))
 
 ;; should it have defensive copy?
 (defmacro on-write [fn]
   `(defn [classmethod] write [cls records values #* args]
-     (for [o records] (~fn o values))
+     (setv fn-record-values ~fn)
+     (for [o records] (fn-record-values o values))
      (for [o (list (partition 2 args))]
-       (for [r (first o)] (~fn r (second o))))
+       (for [r (first o)] (fn-record-values r (second o))))
      (.write (super) records values #* args)))
