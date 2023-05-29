@@ -90,3 +90,20 @@
   (groupby
     (sorted iter :key fn)
     :key fn))
+
+(defn volume-m3-to-cms [volume-m3]
+  (when (and (not (is volume-m3 None))
+             (>= volume-m3 0)) 
+    (evently-divide
+      (Decimal (* 300
+                 (** (float volume-m3) (/ 1 3)))) 3 (Decimal "0.01"))))
+
+(defn volume-cms-to-m3 [cms]
+  (let [cm3 (reduce * cms)]
+    (.quantize
+      (if cm3  ;; if 0 return 0 do not divide.
+          (/ cm3
+             (Decimal "1000000"))
+          cm3)
+      (Decimal "0.001")
+      decimal.ROUND_HALF_UP)))
