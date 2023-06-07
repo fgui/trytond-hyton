@@ -42,6 +42,11 @@
 (defn str-not-empty? [s]
   (not (str-empty? s)))
 
+(defn str-as-one-line [s]
+  (if s
+      (.join " " (.split s))
+      s))
+
 (defn less-caps [a-string]
   (.join " " (map (fn [s] (if (= s (.lower s)) s (.capitalize s))) (.split a-string))))
 
