@@ -44,11 +44,11 @@
   (.search (.get (Pool) model-name) #* args #** kargs))
 
 ;;rec-name helpers
-(defn not-operator? [s]
+(defn is-not-operator [s]
   (or (.startswith s "!") (.startswith s "not ")))
 
 (defn rec-name-and-or [s-operator]
-  (if (not-operator? s-operator) ["AND"] ["OR"]))
+  (if (is-not-operator s-operator) ["AND"] ["OR"]))
 
 (defn rec-name-search-fields [fields clauses]
   (->>
@@ -71,7 +71,7 @@
      (for [values c-vlist] (fn-pre values))
      (.create (super) c-vlist)))
 
-;; it has defensive copy is it really needed?
+;; it has defensive copy is it really is-needed
 (defmacro on-create [fn-values fn-record]
   `(defn [classmethod] create [cls vlist]
      (setv
@@ -83,7 +83,7 @@
      (for [o ret] (fn-post o))
      ret))
 
-;; should it have defensive copy?
+;; should it have defensive is-copy
 (defmacro on-write [fn]
   `(defn [classmethod] write [cls records values #* args]
      (setv fn-record-values ~fn)

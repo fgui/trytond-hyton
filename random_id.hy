@@ -1,7 +1,7 @@
 (import trytond.model [ModelSQL ModelView fields]
         trytond.pool [Pool]
         functools [reduce]
-        trytond.modules.hyton.utils [none? empty?]
+        trytond.modules.hyton.utils [is-none is-empty]
         cytoolz [take]
         hy.pyops *
         random)
@@ -32,7 +32,7 @@
 (defn get-new-id [model field [size 8] [prefix ""]]
   (setv TheModel (.get (Pool) model)
         new-identifier (create-id size prefix))
-  (while (not (empty? (.search TheModel [#(field "=" new-identifier)])))
+  (while (not (is-empty (.search TheModel [#(field "=" new-identifier)])))
     (setv new-identifier (create-id size prefix)))
   new-identifier)
 
@@ -41,7 +41,7 @@
 Add a unique identifier within the model-name with the given parameters.
 Use know-ids for Ids not added yet to the model which should not be used either"
   (setv identifier (.get values "identifier" None))
-  (when (or (none? identifier) (= "" identifier))
+  (when (or (is-none identifier) (= "" identifier))
     (setv id (get-new-id model-name "identifier" size prefix))
     (while (in id known-ids)
       (setv id (get-new-id model-name "identifier" size prefix)))

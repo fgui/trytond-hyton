@@ -11,14 +11,14 @@
   trytond.modules.hyton.utils [evently-divide
                                evently-divide-portions
                                c-group-by
-                               str-empty?
-                               str-not-empty?]
+                               is-str-empty
+                               is-str-not-empty]
   itertools [groupby]
   trytond [pyson]
   trytond.pool [Pool]
   )
 
-(defn even? [x]
+(defn is-even [x]
   (= 0 (% x 2)))
 
 (defclass HytonTestCase [ModuleTestCase]
@@ -105,17 +105,17 @@
 
 
   (defn test-str-empty [self]
-    (.assertTrue self (str-empty? None))
-    (.assertTrue self (str-empty? ""))
-    (.assertTrue self (str-empty? "  "))
-    (.assertFalse self (str-not-empty? "  "))
-    (.assertTrue self (str-not-empty? " h "))
+    (.assertTrue self (is-str-empty None))
+    (.assertTrue self (is-str-empty ""))
+    (.assertTrue self (is-str-empty "  "))
+    (.assertFalse self (is-str-not-empty "  "))
+    (.assertTrue self (is-str-not-empty " h "))
     )
   
   
   (defn test-c-group-by [self]
-    (.assertEqual self (len (list (groupby [1 2 3 4] even?))) 4)
-    (.assertEqual self (len (list (c-group-by even? [1 2 3 4]))) 2))
+    (.assertEqual self (len (list (groupby [1 2 3 4] is-even))) 4)
+    (.assertEqual self (len (list (c-group-by is-even [1 2 3 4]))) 2))
   
   (defn test-evently-divide [self]
     (.assertEqual self

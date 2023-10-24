@@ -4,11 +4,11 @@
         itertools [repeat groupby]
         hy.pyops *)
 
-(defn none? [x]
+(defn is-none [x]
   "Check if `x` is None"
   (is x None))
 
-(defn empty? [coll]
+(defn is-empty [coll]
   "Check if `coll` is empty."
   (= 0 (len coll)))
 
@@ -22,13 +22,13 @@
 
 
 (defn quantize-euros[d]
-  (when (not (none? d))
+  (when (not (is-none d))
     (.quantize d (decimal.Decimal "0.01") decimal.ROUND_HALF_UP)))
 
 (defn calculate-percentage [percentage value]
   (/ (* value percentage) (Decimal "100")))
 
-(defn not-none? [x] (not (none? x)))
+(defn is-not-none [x] (not (is-none x)))
 
 (defn get-or [map key value]
   (try (get map key) (except [KeyError] value)))
@@ -36,11 +36,11 @@
 (defn get-or-none [map key]
   (get-or map key None))
 
-(defn str-empty? [s]
-  (or (none? s) (empty? (.strip s))))
+(defn is-str-empty [s]
+  (or (is-none s) (is-empty (.strip s))))
 
-(defn str-not-empty? [s]
-  (not (str-empty? s)))
+(defn is-str-not-empty [s]
+  (not (is-str-empty s)))
 
 (defn str-as-one-line [s]
   (if s
