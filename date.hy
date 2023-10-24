@@ -5,6 +5,7 @@
         trytond.model [fields Model]
         trytond.pool [Pool]
         trytond.modules.hyton.utils [first]
+        trytond.modules.hyton.context [context-company]
         cytoolz [second])
 (require hyrule [->])
 
@@ -14,8 +15,17 @@
   TIMEZONES)
 
 (defn default-timezone []
-  ;; TODO maybe attempt to get timezone from user/company if exists
   "Europe/Madrid")
+
+(defn default-timezone-company-context []
+  (let [company-id (context-company)]
+    (if (and company-id (> company-id 0))
+        (let [company ((.get (Pool) "company.company") id)]
+          (if (and company company.timezone)
+              company.timezone
+              (default-timezone)
+              ))
+        default-timezone)))
 
 (defn date-today []
   (setv Date (.get (Pool) "ir.date"))

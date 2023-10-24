@@ -5,7 +5,7 @@
   (.get (. (Transaction) context) key))
 
 ;; this could be in company.
-(defn context-company[]
+(defn context-company []
   (context-get "company"))
 
 ;; this could/should be in cargo_container/container.
