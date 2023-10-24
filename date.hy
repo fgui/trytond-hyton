@@ -20,7 +20,7 @@
 (defn default-timezone-company-context []
   (let [company-id (context-company)]
     (if (and company-id (> company-id 0))
-        (let [company ((.get (Pool) "company.company") id)]
+        (let [company ((.get (Pool) "company.company") company-id)]
           (if (and company company.timezone)
               company.timezone
               (default-timezone)
