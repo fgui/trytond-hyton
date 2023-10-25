@@ -25,7 +25,7 @@
               company.timezone
               (default-timezone)
               ))
-        default-timezone)))
+        (default-timezone))))
 
 (defn date-today []
   (setv Date (.get (Pool) "ir.date"))
