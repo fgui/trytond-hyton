@@ -46,3 +46,6 @@
 (defn immutable [field]
   (add-readonly field (Greater (Eval "id" 0) 0)))
 
+(defn invisible-new [field]
+  (add-invisible field (bnot (Greater (Eval "id" 0) 0))))
+
