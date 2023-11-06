@@ -90,3 +90,27 @@
   (+ (.strftime (datetime.datetime.now) "%Y%m%H%M%S")
      sep
      (str (int (time.time)))))
+
+
+(defclass DTMix [Model]
+  (setv
+    dt (.Function fields (.Char fields "Datetime")
+                        "get_dt" :searcher "search_dt")
+    )
+
+  (defn get-dt [self [name None]]
+    (datetime.datetime.strftime self.create-date "%-d %b %-y %-H:%M" ))
+
+  (defn [classmethod] search-dt [cls name clause]
+    (let [cl2 (get clause 2)
+          cl2 (.replace  cl2 "%" "")]
+      (do (import pdb) (pdb.set-trace))
+      (when (.isdigit cl2)
+        [#( "create_date" "<" (plus-date (datetime-now) (- (int cl2))))]
+        
+        )))
+
+  (defn order_dt [tables]
+    (let [table (first (get tables None))]
+      [table.create-date]
+      )))

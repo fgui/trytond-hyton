@@ -44,8 +44,13 @@
       (add-depends ["company"])))
 
 (defn immutable [field]
-  (add-readonly field (Greater (Eval "id" 0) 0)))
+  (-> field
+      (add-readonly (Greater (Eval "id" 0) 0))
+      (add-depends ["id"])))
 
 (defn invisible-new [field]
-  (add-invisible field (bnot (Greater (Eval "id" 0) 0))))
+  (-> field
+      (add-invisible (bnot (Greater (Eval "id" 0) 0)))
+      (add-depends ["id"])
+      ))
 
