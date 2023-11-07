@@ -104,7 +104,6 @@
   (defn [classmethod] search-dt [cls name clause]
     (let [cl2 (get clause 2)
           cl2 (.replace  cl2 "%" "")]
-      (do (import pdb) (pdb.set-trace))
       (when (.isdigit cl2)
         [#( "create_date" "<" (plus-date (datetime-now) (- (int cl2))))]
         
