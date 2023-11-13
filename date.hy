@@ -99,7 +99,12 @@
     )
 
   (defn get-dt [self [name None]]
-    (datetime.datetime.strftime self.create-date "%-d %b %-y %-H:%M" ))
+    (datetime.datetime.strftime
+      (.astimezone
+        self.create-date
+        (pytz.timezone
+          (default-timezone-company-context)))
+      "%-d %b %-y %-H:%M" ))
 
   (defn [classmethod] search-dt [cls name clause]
     (let [cl2 (get clause 2)
