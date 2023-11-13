@@ -110,7 +110,7 @@
     (let [cl2 (get clause 2)
           cl2 (.replace  cl2 "%" "")]
       (when (.isdigit cl2)
-        [#( "create_date" "<" (plus-date (datetime-now) (- (int cl2))))]
+        [#( "create_date" "<" (plus-days (datetime-now) (- (int cl2))))]
         
         )))
 
