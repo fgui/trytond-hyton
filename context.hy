@@ -11,3 +11,7 @@
 ;; this could/should be in cargo_container/container.
 (defn context-warehouse[]
   (context-get "cargo_warehouse"))
+
+;; this could be in company.
+(defn context-locale []
+  (context-get "locale"))

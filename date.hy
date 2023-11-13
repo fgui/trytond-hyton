@@ -5,7 +5,7 @@
         trytond.model [fields Model]
         trytond.pool [Pool]
         trytond.modules.hyton.utils [first]
-        trytond.modules.hyton.context [context-company]
+        trytond.modules.hyton.context [context-company context-locale]
         cytoolz [second])
 (require hyrule [->])
 
@@ -85,7 +85,7 @@
       (date-next-day-of-month (plus-days (date-last-day-month date) 1) day-of-month)
       ))
 
-;; it includes date in locale and unix time up to seconds.
+;; it includes date in formated and unix time up to seconds.
 (defn dt-str4bots [[sep "-"]]
   (+ (.strftime (datetime.datetime.now) "%Y%m%H%M%S")
      sep
@@ -95,26 +95,26 @@
 (defclass DTMix [Model]
   (setv
     dt (.Function fields (.Char fields "Datetime")
-                        "get_dt" :searcher "search_dt")
-    )
+                  "get_dt" :searcher "search_dt"))
 
   (defn get-dt [self [name None]]
-    (datetime.datetime.strftime
-      (.astimezone
-        self.create-date
-        (pytz.timezone
-          (default-timezone-company-context)))
-      "%-d %b %-y %-H:%M" ))
+    (let [format-date (.get (context-locale) "date" "%d-%m-%Y")
+          format-dt (+ format-date " %H:%M")]
+      (datetime.datetime.strftime
+        (.astimezone
+          self.create-date
+          (pytz.timezone
+            (default-timezone-company-context)))
+        format-dt)))
 
   (defn [classmethod] search-dt [cls name clause]
     (let [cl2 (get clause 2)
           cl2 (.replace  cl2 "%" "")]
       (when (.isdigit cl2)
-        [#( "create_date" "<" (plus-days (datetime-now) (- (int cl2))))]
-        
-        )))
+        [#( "create_date"
+             "<"
+            (plus-days (datetime-now) (- (int cl2))))])))
 
   (defn order_dt [tables]
     (let [table (first (get tables None))]
-      [table.create-date]
-      )))
+      [table.create-date])))
