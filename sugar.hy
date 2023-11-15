@@ -8,6 +8,10 @@
 (defn default-func-name [name]
   (+ "default_" (.replace name "-" "_")))
 
+;; Symbol to python string
+(defmacro pstr [field]
+  (.replace (str field) "-" "_"))
+
 (defmacro default [field args #* body]
   `(defn [classmethod] ~(Symbol (default-func-name (str field)))
          ~(+ [(Symbol "cls")] (list args)) ~@body))
