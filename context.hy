@@ -4,6 +4,10 @@
 (defn context-get [key]
   (.get (. (Transaction) context) key))
 
+
+(defn context-language []
+  (. (Transaction) language))
+
 ;; this could be in company.
 (defn context-company []
   (context-get "company"))
