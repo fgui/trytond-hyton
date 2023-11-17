@@ -4,7 +4,6 @@
 (defn context-get [key]
   (.get (. (Transaction) context) key))
 
-
 (defn context-language []
   (. (Transaction) language))
 
