@@ -3,7 +3,7 @@
         trytond.modules.hyton.utils [first]
         hyrule [rest]
         cytoolz [second partition])
-(require hyrule [->>])
+(require hyrule [assoc ->>])
 
 (defn default-func-name [name]
   (+ "default_" (.replace name "-" "_")))
@@ -46,6 +46,10 @@
 
 (defn pool-search [model-name #* args #** kargs]
   (.search (.get (Pool) model-name) #* args #** kargs))
+
+(defn pool-search-one [model-name #* args #** kargs]
+  (assoc kargs "limit" 1)
+  (first (.search (.get (Pool) model-name) #* args #** kargs)))
 
 ;;rec-name helpers
 (defn is-not-operator [s]

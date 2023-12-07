@@ -47,6 +47,12 @@
       (.join " " (.split s))
       s))
 
+(defn strip-empty-return-none [s]
+  (when s
+    (let [s-strip (.strip s)]
+      (when (not (is-empty s-strip))
+        s-strip))))
+
 (defn less-caps [a-string]
   (.join " " (map (fn [s] (if (= s (.lower s)) s (.capitalize s))) (.split a-string))))
 
