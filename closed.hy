@@ -1,5 +1,5 @@
 (import inspect
-        trytond.model [Model fields]
+        trytond.model [ModelSQL fields Index]
         trytond.model.fields [Field]
         trytond.pyson [Equal Eval]
         trytond.modules.hyton.common-fields [add-readonly add-depends]
@@ -21,10 +21,19 @@
             ["closed"])))
 
 ;;TODO maybe rename to CloseableMixin
-(defclass Closeable [Model]
+(defclass Closeable [ModelSQL]
   (setv
-    closed (.Boolean fields "Closed" :select True :readonly True))
+    closed (.Boolean fields "Closed" :readonly True))
 
+
+  (defn [classmethod] __setup__ [cls]
+    (.__setup__ (super))
+    (setv t (.__table__ cls))
+    (.add cls._sql-indexes
+          (Index t #(t.closed (.Equality Index)))
+          ))
+
+  
   (defn [classmethod] readonly-closed-setup [cls]
     (for [field (->> cls
                      (inspect.getmembers)

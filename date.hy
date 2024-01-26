@@ -108,12 +108,13 @@
     (format-dd-mmm-yy-hh-mm-context-tz-lang self.create-date))
 
   (defn [classmethod] search-dt [cls name clause]
-    (let [cl2 (get clause 2)
-          cl2 (.replace  cl2 "%" "")]
-      (when (.isdigit cl2)
-        [#( "create_date"
-             "<"
-            (plus-days (datetime-now) (- (int cl2))))])))
+    (when (get clause 2)
+      (let [cl2 (get clause 2)
+            cl2 (.replace  cl2 "%" "")]
+        (when (.isdigit cl2)
+          [#( "create_date"
+               "<"
+               (plus-days (datetime-now) (- (int cl2))))]))))
 
   (defn order_dt [tables]
     (let [table (first (get tables None))]

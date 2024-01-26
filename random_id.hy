@@ -1,4 +1,4 @@
-(import trytond.model [ModelSQL ModelView fields]
+(import trytond.model [ModelSQL ModelView fields Index]
         trytond.pool [Pool]
         functools [reduce]
         trytond.modules.hyton.utils [is-none is-empty]
@@ -22,6 +22,12 @@
           (take size
                 (repeatedly
                   (fn [] (get letters (dec (random.randint 1 l))))))))
+
+(defn create-indexes-identifier [table-field]
+  (let [table table-field.table]
+    #{(Index table  #(table-field (.Similarity Index)))
+      (Index table  #(table-field (.Equality Index)))})
+  )
 
 (defn create-id [[size 8] [prefix ""]]
   ;; some the letters/numbers that get confussed removed

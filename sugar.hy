@@ -1,4 +1,5 @@
 (import hy.models [Symbol]
+        trytond.model [Index]
         trytond.pool [Pool]
         trytond.modules.hyton.utils [first]
         hyrule [rest]
@@ -99,3 +100,11 @@
      (for [o (list (partition 2 args))]
        (for [r (first o)] (fn-record-values r (second o))))
      (.write (super) records values #* args)))
+
+(defn create-indexes-code [table-field-code]
+  (let [table table-field-code.table]
+    #{(Index table #(table-field-code (.Equality Index)))
+      (Index table #(table-field-code (.Similarity Index)))}))
+
+(defn create-indexes-date [table-field-date]
+  #{(Index table-field-date.table #(table-field-date (.Range Index)))})
