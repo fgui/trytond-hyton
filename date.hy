@@ -24,7 +24,6 @@
           (if (and company company.timezone)
               company.timezone
               (default-timezone)))
-              
         (default-timezone))))
 
 (defn date-today []
@@ -49,7 +48,6 @@
 
 (defn date-first-day-year [date]
   (.replace (.replace date :day 1) :month 1))
-  
 
 (defn date-first-day-current-year []
   (.replace (.replace (datetime.date.today) :day 1) :month 1))
@@ -82,11 +80,11 @@
 (defn date-next-day-of-month [date day-of-month]
   (if (<= date.day day-of-month)
       (.replace date :day day-of-month)
-      (date-next-day-of-month (plus-days (date-last-day-month date) 1) day-of-month)))      
+      (date-next-day-of-month (plus-days (date-last-day-month date) 1) day-of-month)))
 
 ;; it includes date in formated and unix time up to seconds.
 (defn dt-str4bots [[sep "-"]]
-  (+ (.strftime (datetime.datetime.now) "%Y%m%H%M%S")
+  (+ (.strftime (datetime.datetime.now) "%Y%m%d%H%M%S")
      sep
      (str (int (time.time)))))
 
@@ -119,4 +117,3 @@
   (defn order_dt [tables]
     (let [table (first (get tables None))]
       [table.create-date])))
-
