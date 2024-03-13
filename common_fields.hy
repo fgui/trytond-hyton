@@ -45,7 +45,7 @@
 
 (defn immutable [field]
   (-> field
-      (add-readonly (Greater (Eval "id" 0) 0))
+      (add-readonly (Greater (Eval "id" -1) 0))
       (add-depends ["id"])))
 
 (defn invisible-new [field]

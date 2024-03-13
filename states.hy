@@ -18,8 +18,3 @@
                               ))}
         DEPENDS ["company"]))
 
-(setv IMMUTABLE {"readonly"
-                 (Greater (Eval "id" 0) 0)})
-
-
-
